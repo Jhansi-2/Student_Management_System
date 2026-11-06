@@ -1,0 +1,18 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.DS_Store
+npm-debug.log*
+
+# Old experimental files
+app1.js
+app2.js
+app3.js
+app4.js
+app6.js
+db5.js
+public.zip
+
+# Old backend copy inside frontend
+public/app7.js

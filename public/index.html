@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#101827">
+    <title>Student Management | EduTrack</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/script.js" defer></script>
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="/">
+                <span class="brand-icon">E</span>
+                <span>
+                    <strong>EduTrack</strong>
+                    <small>STUDENT PORTAL</small>
+                </span>
+            </a>
+
+            <div class="nav-label">WORKSPACE</div>
+            <nav class="navigation">
+                <a href="#dashboard" class="nav-item active">
+                    <span class="nav-icon">▦</span> Dashboard
+                </a>
+                <a href="#students" class="nav-item">
+                    <span class="nav-icon">♙</span> Students
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="help-card">
+                    <div class="help-icon">✦</div>
+                    <strong>Stay organized</strong>
+                    <p>Manage student records from one simple workspace.</p>
+                </div>
+                <div class="sidebar-footer">
+                    <span class="status-dot"></span>
+                    Student database
+                    <span class="online-label">LOCAL</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div>
+                    <div class="breadcrumb">Workspace <span>/</span> Students</div>
+                    <h1>Student Management</h1>
+                    <p class="page-subtitle">Manage your student records in one place.</p>
+                </div>
+                <div class="topbar-right">
+                    <div class="date-chip"><span>◷</span> <span id="current-date">Today</span></div>
+                    <div class="avatar">A</div>
+                </div>
+            </header>
+
+            <section class="stats-grid" id="dashboard">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Total Students</span>
+                        <span class="stat-icon purple">♙</span>
+                    </div>
+                    <div class="stat-number" id="total-students">—</div>
+                    <div class="stat-foot">Registered student records</div>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Total Marks / Points</span>
+                        <span class="stat-icon green">▤</span>
+                    </div>
+                    <div class="stat-number" id="total-points">—</div>
+                    <div class="stat-foot">Sum of the recorded totals</div>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Average Total</span>
+                        <span class="stat-icon orange">↗</span>
+                    </div>
+                    <div class="stat-number" id="average-total">—</div>
+                    <div class="stat-foot">Average across all students</div>
+                </article>
+            </section>
+
+            <section class="content-panel" id="students">
+                <div class="panel-heading">
+                    <div>
+                        <h2>All Students</h2>
+                        <p>View, search, add, and update student records.</p>
+                    </div>
+                    <button class="primary-button" id="add-student-btn">
+                        <span>＋</span> Add Student
+                    </button>
+                </div>
+
+                <div class="toolbar">
+                    <label class="search-box">
+                        <span>⌕</span>
+                        <input id="search-input" type="search"
+                               placeholder="Search by student ID or name..."
+                               aria-label="Search students">
+                    </label>
+                    <button class="secondary-button" id="refresh-btn">
+                        <span>↻</span> Refresh
+                    </button>
+                </div>
+
+                <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STUDENT ID</th>
+                                <th>STUDENT NAME</th>
+                                <th>TOTAL</th>
+                                <th>STATUS</th>
+                                <th class="actions-heading">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-body">
+                            <tr>
+                                <td colspan="5" class="loading-cell">
+                                    <span class="spinner"></span> Loading students...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <span id="results-count">Loading records...</span>
+                    <span class="footer-note"><span class="status-dot"></span> Connected to student API</span>
+                </div>
+            </section>
+
+            <footer class="page-footer">
+                <span>© <span id="year"></span> EduTrack Student Management</span>
+                <span>Built with Express &amp; MySQL</span>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Add / Edit student dialog -->
+    <dialog id="student-dialog" class="student-dialog">
+        <form id="student-form">
+            <div class="dialog-heading">
+                <div>
+                    <span class="dialog-eyebrow">STUDENT RECORD</span>
+                    <h2 id="dialog-title">Add Student</h2>
+                    <p>Enter the student details below.</p>
+                </div>
+                <button type="button" class="close-button" id="close-dialog"
+                        aria-label="Close dialog">×</button>
+            </div>
+
+            <label class="form-label" for="student-id">Student ID</label>
+            <input id="student-id" name="sno" type="number" min="1"
+                   placeholder="e.g. 101" required>
+
+            <label class="form-label" for="student-name">Student Name</label>
+            <input id="student-name" name="name" type="text" maxlength="100"
+                   placeholder="Enter full name" required>
+
+            <label class="form-label" for="student-total">Total</label>
+            <input id="student-total" name="total" type="number" min="0"
+                   step="any" placeholder="Enter total marks / points" required>
+
+            <p class="form-hint" id="id-hint">Choose a unique student ID.</p>
+
+            <div class="dialog-actions">
+                <button type="button" class="secondary-button" id="cancel-btn">Cancel</button>
+                <button type="submit" class="primary-button" id="save-btn">Save Student</button>
+            </div>
+        </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
